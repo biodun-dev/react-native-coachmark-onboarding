@@ -6,7 +6,7 @@ module.exports = async (env, argv) => {
     {
       ...env,
       babel: {
-        dangerouslyAddModulePathsToTranspile: ['tmp-module'],
+        dangerouslyAddModulePathsToTranspile: ['react-native-coachmark-onboarding'],
       },
     },
     argv

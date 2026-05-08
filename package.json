@@ -2,8 +2,8 @@
   "name": "react-native-coachmark-onboarding",
   "version": "0.1.0",
   "description": "Portal-based coachmark onboarding for React Native",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean",
@@ -32,12 +32,12 @@
   "author": "biodun-dev <abdultoheeb97@gmail.com> (https://github.com/biodun-dev)",
   "license": "MIT",
   "homepage": "https://github.com/biodun-dev/react-native-coachmark-onboarding#readme",
-  "dependencies": {},
   "devDependencies": {
     "@types/react": "~19.1.1",
-    "expo-module-scripts": "^55.0.2",
+    "@types/react-native": "^0.72.8",
     "expo": "^55.0.20",
-    "react-native": "0.82.1"
+    "expo-module-scripts": "^55.0.2",
+    "react-native": "^0.82.1"
   },
   "peerDependencies": {
     "expo": "*",
