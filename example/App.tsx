@@ -3,8 +3,22 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { CoachmarkProvider, useCoachmark } from 'react-native-coachmark-onboarding';
 
-const CoachmarkTarget = ({ id, step, children, style }: { id: string, step: number, children: React.ReactNode, style?: any }) => {
-  const { ref, onLayout } = useCoachmark(id, step);
+const CoachmarkTarget = ({ 
+  id, 
+  step, 
+  children, 
+  style, 
+  shape, 
+  radius 
+}: { 
+  id: string, 
+  step: number, 
+  children: React.ReactNode, 
+  style?: any,
+  shape?: 'rect' | 'circle',
+  radius?: number
+}) => {
+  const { ref, onLayout } = useCoachmark(id, step, { shape, radius });
   return (
     <View ref={ref} onLayout={onLayout} style={style}>
       {children}
@@ -17,22 +31,22 @@ const MainScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <CoachmarkTarget id="header" step={0} style={styles.headerContainer}>
+      <CoachmarkTarget id="header" step={0} style={styles.headerContainer} radius={4}>
         <Text style={styles.headerText}>Welcome to Coachmark</Text>
       </CoachmarkTarget>
 
       <View style={styles.content}>
-        <CoachmarkTarget id="card" step={1} style={styles.card}>
-          <Text style={styles.cardTitle}>Core Feature</Text>
-          <Text style={styles.cardDesc}>This is where the magic happens. Register any component with a single hook.</Text>
+        <CoachmarkTarget id="card" step={1} style={styles.card} radius={16}>
+          <Text style={styles.cardTitle}>Animated Morphing</Text>
+          <Text style={styles.cardDesc}>Watch the spotlight smoothly transition from a rectangle to a circle!</Text>
         </CoachmarkTarget>
 
         <TouchableOpacity style={styles.startButton} onPress={startSequence}>
-          <Text style={styles.startButtonText}>Start Walkthrough</Text>
+          <Text style={styles.startButtonText}>Start Animated Walkthrough</Text>
         </TouchableOpacity>
       </View>
 
-      <CoachmarkTarget id="fab" step={2} style={styles.fab}>
+      <CoachmarkTarget id="fab" step={2} style={styles.fab} shape="circle">
         <Text style={styles.fabIcon}>+</Text>
       </CoachmarkTarget>
     </SafeAreaView>

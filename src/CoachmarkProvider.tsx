@@ -1,27 +1,7 @@
 import * as React from 'react';
-import { createContext, useState, useCallback, useMemo } from 'react';
-import { LayoutRectangle } from 'react-native';
+import { useState, useCallback, useMemo } from 'react';
+import { CoachmarkContext, CoachmarkElement } from './CoachmarkContext';
 import { CoachmarkOverlay } from './components/CoachmarkOverlay';
-
-export interface CoachmarkElement {
-  id: string;
-  layout: LayoutRectangle;
-  step: number;
-}
-
-export interface CoachmarkContextType {
-  isActive: boolean;
-  currentStep: number;
-  elements: Record<string, CoachmarkElement>;
-  registerElement: (element: CoachmarkElement) => void;
-  unregisterElement: (id: string) => void;
-  startSequence: () => void;
-  stopSequence: () => void;
-  nextStep: () => void;
-  prevStep: () => void;
-}
-
-export const CoachmarkContext = createContext<CoachmarkContextType | undefined>(undefined);
 
 export const CoachmarkProvider = ({ children }: { children: React.ReactNode }) => {
   const [isActive, setIsActive] = useState(false);

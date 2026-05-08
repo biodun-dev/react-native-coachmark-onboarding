@@ -1,8 +1,8 @@
 import { useContext, useEffect, useRef } from 'react';
 import { View } from 'react-native';
-import { CoachmarkContext } from './CoachmarkContext';
+import { CoachmarkContext, CoachmarkShape } from './CoachmarkContext';
 
-export const useCoachmark = (id: string, step: number) => {
+export const useCoachmark = (id: string, step: number, options?: { shape?: CoachmarkShape, radius?: number }) => {
   const context = useContext(CoachmarkContext);
   const ref = useRef<View>(null);
 
@@ -19,6 +19,8 @@ export const useCoachmark = (id: string, step: number) => {
           id,
           step,
           layout: { x, y, width, height },
+          shape: options?.shape,
+          radius: options?.radius,
         });
       });
     }
