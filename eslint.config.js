@@ -15,7 +15,8 @@ module.exports = [
     {
         files: ["**/*.{js,jsx,ts,tsx}"],
         rules: {
-            // Add custom rules here if needed
+            "node/handle-callback-err": "off",
+            "node/no-callback-literal": "off",
         },
         settings: {
             react: {
