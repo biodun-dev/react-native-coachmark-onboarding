@@ -33,6 +33,8 @@
   "license": "MIT",
   "homepage": "https://github.com/biodun-dev/react-native-coachmark-onboarding#readme",
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "^10.0.1",
     "@types/react": "~19.1.1",
     "@types/react-native": "^0.72.8",
     "expo": "^55.0.20",
