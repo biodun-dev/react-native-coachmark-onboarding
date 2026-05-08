@@ -1,34 +1,71 @@
 import * as React from 'react';
-import { useState, useCallback, useMemo } from 'react';
-import { CoachmarkContext, CoachmarkElement } from './CoachmarkContext';
+import { useState, useCallback, useMemo, useEffect } from 'react';
+import {
+  CoachmarkContext,
+  CoachmarkElement,
+  CoachmarkProviderProps,
+} from './CoachmarkContext';
 import { CoachmarkOverlay } from './components/CoachmarkOverlay';
 
-export const CoachmarkProvider = ({ children }: { children: React.ReactNode }) => {
+export const CoachmarkProvider = ({
+  children,
+  onFinish,
+  onSkip,
+  onStepChange,
+  backdropBehavior = 'none',
+  enabled = true,
+  overlayColor,
+  renderTooltip,
+}: CoachmarkProviderProps) => {
   const [isActive, setIsActive] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [elements, setElements] = useState<Record<string, CoachmarkElement>>({});
 
+  const totalSteps = useMemo(() => {
+    const steps = Object.values(elements).map((el) => el.step);
+    return steps.length > 0 ? Math.max(...steps) + 1 : 0;
+  }, [elements]);
+
+  useEffect(() => {
+    if (isActive && totalSteps > 0 && currentStep >= totalSteps) {
+      setIsActive(false);
+      setCurrentStep(0);
+      onFinish?.();
+    }
+  }, [currentStep, totalSteps, isActive, onFinish]);
+
+  useEffect(() => {
+    if (isActive && currentStep < totalSteps) {
+      onStepChange?.(currentStep, totalSteps);
+    }
+  }, [currentStep, isActive, totalSteps, onStepChange]);
+
   const registerElement = useCallback((element: CoachmarkElement) => {
-    setElements((prev: Record<string, CoachmarkElement>) => ({ ...prev, [element.id]: element }));
+    setElements((prev: Record<string, CoachmarkElement>) => ({
+      ...prev,
+      [element.id]: element,
+    }));
   }, []);
 
   const unregisterElement = useCallback((id: string) => {
     setElements((prev: Record<string, CoachmarkElement>) => {
-      const newElements = { ...prev };
-      delete newElements[id];
-      return newElements;
+      const next = { ...prev };
+      delete next[id];
+      return next;
     });
   }, []);
 
   const startSequence = useCallback(() => {
+    if (!enabled) return;
     setIsActive(true);
     setCurrentStep(0);
-  }, []);
+  }, [enabled]);
 
   const stopSequence = useCallback(() => {
     setIsActive(false);
     setCurrentStep(0);
-  }, []);
+    onSkip?.();
+  }, [onSkip]);
 
   const nextStep = useCallback(() => {
     setCurrentStep((prev: number) => prev + 1);
@@ -42,6 +79,7 @@ export const CoachmarkProvider = ({ children }: { children: React.ReactNode }) =
     () => ({
       isActive,
       currentStep,
+      totalSteps,
       elements,
       registerElement,
       unregisterElement,
@@ -50,13 +88,28 @@ export const CoachmarkProvider = ({ children }: { children: React.ReactNode }) =
       nextStep,
       prevStep,
     }),
-    [isActive, currentStep, elements, registerElement, unregisterElement, startSequence, stopSequence, nextStep, prevStep]
+    [
+      isActive,
+      currentStep,
+      totalSteps,
+      elements,
+      registerElement,
+      unregisterElement,
+      startSequence,
+      stopSequence,
+      nextStep,
+      prevStep,
+    ]
   );
 
   return (
     <CoachmarkContext.Provider value={value}>
       {children}
-      <CoachmarkOverlay />
+      <CoachmarkOverlay
+        backdropBehavior={backdropBehavior}
+        overlayColor={overlayColor}
+        renderTooltip={renderTooltip}
+      />
     </CoachmarkContext.Provider>
   );
 };
