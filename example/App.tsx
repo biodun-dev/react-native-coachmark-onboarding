@@ -114,10 +114,9 @@ const MainScreen = () => {
         description="This floating button uses a circular spotlight. Perfect for round elements!"
         shape="circle"
         padding={8}
+        style={styles.fab}
       >
-        <View style={styles.fab}>
-          <Text style={styles.fabIcon}>+</Text>
-        </View>
+        <Text style={styles.fabIcon}>+</Text>
       </CoachmarkTarget>
     </SafeAreaView>
   );
