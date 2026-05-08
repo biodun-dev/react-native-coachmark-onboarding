@@ -17,5 +17,10 @@ module.exports = [
         rules: {
             // Add custom rules here if needed
         },
+        settings: {
+            react: {
+                version: "detect",
+            },
+        },
     },
 ];
